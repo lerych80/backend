@@ -5,14 +5,9 @@ class PostService {
                 const createdPost = await Post.create(post)
                 return createdPost
             }
-        async getAll(req, res){
-            try {
+        async getAll(){
                 const posts = await Post.find()
-                return res.json(posts)
-            }
-            catch (error){
-                res.status(500).json(error)
-            }
+                return posts
         }
         async getOne(id){
                     if (!id) {
@@ -21,32 +16,20 @@ class PostService {
                     const post = await Post.findById(id)
                     return post
                 }
-        async update(req, res){
-                try {
-                    const post = req.body
+        async update(post){
                     if (!post._id){
-                        res.status(400).json({message:'Id not provided'})
+                        throw new Error('Id was not provided')
                     }
                     const updatedPost = await Post.findByIdAndUpdate(post._id, post, {new: true})
-                    return res.json(updatedPost)
+                    return updatedPost
                 }
-            catch (error){
-                res.status(500).json(error)
-            }
-    }
-        async delete(req, res){
-                try {
-                    const {id} = req.params
+        async delete(id){
                     if(!id){
-                        res.status(400).json({message:'Id was not provided'})
+                        throw new Error("Id was not provided")
                     }
                     const post = await Post.findOneAndDelete(id)
-                    return res.json(post)
+                    return post
                 }
-                catch (error){
-                    res.status(500).json(error)
-                }
-            }
 }
 
-export default PostService
+export default new PostService()

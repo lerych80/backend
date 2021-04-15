@@ -2,10 +2,13 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
 import router from "./router.js"
+import fileUpload from 'express-fileupload'
+
 dotenv.config()
 
 const app = express()
 app.use(express.json())
+app.use(fileUpload({}))
 app.use('/api', router)
 
 const PORT = 5000
